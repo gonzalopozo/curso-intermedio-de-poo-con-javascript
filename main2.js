@@ -84,3 +84,43 @@ function deepCopy(subject) {
 //         return recursiva(arr);
 //     }
 // }
+
+function requiredParam(param) {
+    throw new Error(`${param} es obligatorio`);
+}
+
+function createStudent({
+    name = requiredParam("name"),
+    email = requiredParam("email"),
+    age,
+    twitter,
+    instagram,
+    facebook,
+    approvedCourses = [],
+    learningPaths = []
+} = {}) {
+    return {
+        name,
+        age,
+        email,
+        approvedCourses,
+        learningPaths,
+        socialMedia: {
+            twitter,
+            instagram,
+            facebook
+        }
+    };
+}
+
+// const gonzalo2 = createStudent({
+//     name: "Gonzalo",
+//     age: 19,
+//     email: "gonzalopozo2005@gmail.com",
+//     twitter: "gonzalooo"
+// });
+
+const gonzalo2 = createStudent({
+    name: "Gonzalo",
+    email: "correo@correo.es"
+});
