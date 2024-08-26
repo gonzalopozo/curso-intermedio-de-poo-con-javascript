@@ -1,14 +1,14 @@
-const obj1 = {
-    a: "a",
-    b: "b",
-    c : {
-        d: "d",
-        e: "e"
-    },
-    editA() {
-        this.a = "AAAAAAA";
-    } 
-};
+// const obj1 = {
+//     a: "a",
+//     b: "b",
+//     c : {
+//         d: "d",
+//         e: "e"
+//     },
+//     editA() {
+//         this.a = "AAAAAAA";
+//     } 
+// };
 
 // const obj2 = {};
 // for (prop in obj1) {
@@ -124,3 +124,27 @@ const gonzalo2 = createStudent({
     name: "Gonzalo",
     email: "correo@correo.es"
 });
+
+// ------------
+
+const studentBase = {
+    name: undefined,
+    email: undefined,
+    age: undefined,
+    approvedCourses: undefined,
+    learningPaths: undefined,
+    socialMedia: {
+        twitter: undefined,
+        instagram: undefined,
+        facebook: undefined,
+    }
+}
+
+const juan = deepCopy(studentBase);
+Object.seal(juan);
+console.log(Object.isSealed(juan));
+
+// Object.defineProperty(juan, "name", {
+//     value: "Juanito",
+//     configurable: false
+// });
