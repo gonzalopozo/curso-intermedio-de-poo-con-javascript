@@ -143,19 +143,32 @@ function Student({
     this.approvedCourses = approvedCourses;
     this.learningPaths = [];
 
-    if (isArray(learningPaths)) {
-        for (learningPathIndex in learningPaths) {
-            console.log(
-                learningPaths[learningPathIndex] instanceof LearningPath
-            );
-            
-            if (learningPaths[learningPathIndex] instanceof LearningPath) {
-                this.learningPaths.push(learningPaths[learningPathIndex]); 
+    const private = {
+        "_learningPaths": []
+    }
+
+    Object.defineProperty(this, "learningPaths", {
+        get() {
+            return private["_learningPaths"];
+        },
+        set(newLearningPath) {
+            if (newLearningPath instanceof LearningPath) {
+                private["_learningPaths"].push(newLearningPath); 
                 console.log("a");
+            } else {
+                console.warn("Alguno de los LPs no es una instancia del prototipo LearningPath");
                 
             }
         }
+    })
+    
+
+    // if (isArray(learningPaths)) {
+        // this._learningPaths = [];
+    for (learningPathIndex in learningPaths) {
+        this.learningPaths = learningPaths[learningPathIndex];
     }
+    // }
 
 
     // const private = {
@@ -239,6 +252,7 @@ function Student({
 
     // return public;
 }
+
 
 const escuelaWeb = new LearningPath({ name: "Escuela de WebDev" });
 const escuelaData = new LearningPath({ name: "Escuela de Data Science" });
