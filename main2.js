@@ -89,6 +89,35 @@ function requiredParam(param) {
     throw new Error(`${param} es obligatorio`);
 }
 
+function createLearningpath({
+    name = requiredParam("name"),
+    courses = []
+}) {
+    const private = {
+        "_name": name,
+        "_courses": courses
+    };
+
+    const public = {
+        get name() {
+            return private["_name"];
+        },
+        set name(newName) {
+            if (newName.length != 0) {
+                private["_name"] = newName;
+            } else {
+                console.warn("El nombre del learning path debe tener al menos 1 caracter");
+                
+            }
+        },
+        get courses() {
+            return private["_courses"];
+        }
+    };
+
+    return public;
+}
+
 function createStudent({
     name = requiredParam("name"),
     email = requiredParam("email"),
@@ -101,14 +130,14 @@ function createStudent({
 } = {}) {
 
     const private = {
-        "_name": name
+        "_name": name,
+        "_learningPaths": learningPaths
     }
 
     const public = {
         age,
         email,
         approvedCourses,
-        learningPaths,
         socialMedia: {
             twitter,
             instagram,
@@ -124,7 +153,29 @@ function createStudent({
                 console.warn("Tu nombre debe tener al menos 1 caracter");
                 
             }
+        },
+        get learningPaths() {
+            return private["_learningPaths"];
+        },
+        set learningPaths(newLearningPath) {
+            if (!newLearningPath.name) {
+                console.warn("Tu learning path no tiene la propiedad name");
+                return;
+            }
+
+            if (!newLearningPath.courses) {
+                console.warn("Tu learning path no tiene la propiedad courses");
+                return;
+            }
+
+            if (!isArray(newLearningPath.courses)) {
+                console.warn("Los coureses de tu learning path no son una lista");
+                return;
+            }
+
+            private["_learningPaths"].push(newLearningPath);
         }
+
 
         // readName() {
         //     return private["_name"];
