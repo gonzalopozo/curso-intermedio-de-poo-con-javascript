@@ -99,8 +99,12 @@ function createStudent({
     approvedCourses = [],
     learningPaths = []
 } = {}) {
-    return {
-        name,
+
+    const private = {
+        "_name": name
+    }
+
+    const public = {
         age,
         email,
         approvedCourses,
@@ -109,9 +113,42 @@ function createStudent({
             twitter,
             instagram,
             facebook
+        },
+        readName() {
+            return private["_name"];
+        },
+        changeName(newName) {
+            private["_name"] = newName;
         }
-    };
+    }
+
+    // Con defineProperty
+    // Object.defineProperty(public, "readName", {
+    //     writable: false,
+    //     configurable: false
+    // })
+
+    // Object.defineProperty(public, "changeName", {
+    //     writable: false,
+    //     configurable: false
+    // })
+    
+    // Con defineProperties  
+    Object.defineProperties(public, {
+        readName: {
+            configurable: false,
+            writable: false,
+        },
+        changeName: {
+            configurable: false,
+            writable: false,
+        }
+    });
+
+    return public;
 }
+
+const juan = createStudent({ email: "juanito@frijoles.com", name: "Juanito" });
 
 // const gonzalo2 = createStudent({
 //     name: "Gonzalo",
@@ -140,9 +177,9 @@ const studentBase = {
     }
 }
 
-const juan = deepCopy(studentBase);
-Object.seal(juan);
-console.log(Object.isSealed(juan));
+// const juan = deepCopy(studentBase);
+// Object.seal(juan);
+// console.log(Object.isSealed(juan));
 
 // Object.defineProperty(juan, "name", {
 //     value: "Juanito",
