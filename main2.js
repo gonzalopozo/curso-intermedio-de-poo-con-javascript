@@ -68,6 +68,47 @@ function deepCopy(subject) {
     return copySubject;
 }
 
+// class SuperObject {
+//     isArray(subject) {
+//         return Array.isArray(subject);
+//     }
+
+//     isObject(subject) {
+//         return typeof subject == "object";
+//     }
+
+//     static deepCopy(subject) {
+//         let copySubject;
+    
+//         const subjectIsArray = isArray(subject);
+//         const subjectIsObject = isObject(subject);
+    
+//         if (subjectIsArray) {
+//             copySubject = [];
+//         } else if (subjectIsObject) {
+//             copySubject = {};
+//         } else {
+//             return subject;
+//         }
+    
+//         for (key in subject) {
+//             const keyIsObject = isObject(subject[key]);
+    
+//             if (keyIsObject) {
+//                 copySubject[key] = deepCopy(subject[key])
+//             } else {
+//                 if (subjectIsArray) {
+//                     copySubject.push(subject[key]);
+//                 } else {
+//                     copySubject[key] = subject[key];
+//                 }
+//             }
+//         }
+    
+//         return copySubject;
+//     }
+// }
+
 // const numeritos = [0,1,2,3,5,37,53,7,345,345,3,5,43,5,42,56,2,45,32,31,1,85,7,456,36,5,2345,342,543,2];
 
 // // let numerito = 0;
@@ -84,6 +125,51 @@ function deepCopy(subject) {
 //         return recursiva(arr);
 //     }
 // }
+
+function SuperObject() {}
+SuperObject.isArray = function isArray(subject) {
+    return Array.isArray(subject);
+}
+SuperObject.isObject = function isObject(subject) {
+    if (this.isArray(subject)) {
+        return false;
+    } else {
+        return typeof subject == "object";
+    }
+    
+    // return typeof subject == "object";
+}
+SuperObject.deepCopy = function deepCopy(subject) {
+    let copySubject;
+
+    const subjectIsArray = isArray(subject);
+    const subjectIsObject = isObject(subject);
+
+    if (subjectIsArray) {
+        copySubject = [];
+    } else if (subjectIsObject) {
+        copySubject = {};
+    } else {
+        return subject;
+    }
+
+    for (key in subject) {
+        const keyIsObject = isObject(subject[key]);
+
+        if (keyIsObject) {
+            copySubject[key] = deepCopy(subject[key])
+        } else {
+            if (subjectIsArray) {
+                copySubject.push(subject[key]);
+            } else {
+                copySubject[key] = subject[key];
+            }
+        }
+    }
+
+    return copySubject;
+}
+
 
 function requiredParam(param) {
     throw new Error(`${param} es obligatorio`);
